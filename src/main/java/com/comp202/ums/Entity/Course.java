@@ -31,14 +31,6 @@ public class Course {
     @ManyToOne()
     @JoinColumn(name = "instructorId")
     private Instructor instructor;
-
-    @ManyToMany
-    @JoinTable(
-            name = "students",
-            joinColumns = @JoinColumn(name = "stutendId"),
-            inverseJoinColumns = @JoinColumn(name = "courseId")
-    )
-    private List<Student> enrolledStudents;
     
 
 }

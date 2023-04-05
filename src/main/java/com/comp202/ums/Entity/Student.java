@@ -29,8 +29,6 @@ public class Student {
     private String address;
     @Column(name = "dateOfBirth")
     private LocalDate dob;
-    @ManyToMany(mappedBy = "enrolledStudents")
-    private List<Course> enrolledCourse;
     @ManyToOne
     @JoinColumn(name = "departmentId")
     private Department department;
