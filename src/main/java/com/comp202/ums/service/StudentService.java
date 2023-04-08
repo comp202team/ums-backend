@@ -30,7 +30,7 @@ public class StudentService {
         Optional<Student> stundent=studentRepository.findById(id);
         if (stundent.isPresent()){
             Student found=stundent.get();
-            found.setId(newStudent.getId());
+            found.setStudentId(newStudent.getStudentId());
             found.setDob(newStudent.getDob());
             found.setEmail(newStudent.getEmail());
             found.setAddress(newStudent.getAddress());

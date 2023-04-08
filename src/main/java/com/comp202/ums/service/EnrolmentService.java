@@ -24,14 +24,14 @@ public class EnrolmentService {
     }
     public Instructor getInstructor(Long id){
         Course course =courseRepository.findById(id).orElse(null);
-        return courseRepository.getByInstructorId(id);
+        return courseRepository.getByInstructor(id);
     }
     public Student getStudent(Long id){
         return studentRepository.findById(id).orElse(null);
     }
     public Optional<Enrolment> getGrade(Student student){
         Enrolment enrolment = enrolmentRepository.getByStudent(student).orElse(null);
-        return enrolmentRepository.getGradeByStudent(student.getId());
+        return enrolmentRepository.getGradeByStudent(student.getStudentId());
     }
     public Enrolment createEnrolment(Enrolment enrolment){
         return enrolmentRepository.save(enrolment);
