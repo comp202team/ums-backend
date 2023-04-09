@@ -55,7 +55,7 @@ public class UserService implements UserDetailsService {
         user.setUsername(userRegisterRequestDto.getUsername());
         user.setPassword(bCryptPasswordEncoder.encode(userRegisterRequestDto.getPassword()));
         user.setEmail(userRegisterRequestDto.getEmail());
-        user.setRole(Role.USER);
+        user.setRole(Role.STUDENT);
         user = userRepository.save(user);
         return UserMapper.INSTANCE.userToUserDto(user);
     }
@@ -112,7 +112,7 @@ public class UserService implements UserDetailsService {
         return UserMapper.INSTANCE.userToUserDto(getCurrentUser());
     }
     protected boolean isAdmin(){
-        return hasRole("ROLE_ADMIN");
+        return hasRole("ROLE_INSTRUCTOR");
     }
     protected boolean hasRole(String role){
         return SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority(role));

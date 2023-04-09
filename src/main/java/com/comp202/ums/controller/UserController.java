@@ -21,7 +21,7 @@ public class UserController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
     public ResponseEntity<List<UserDto>> getAll(){
         return ResponseEntity.ok(userService.getAll());
     }
@@ -37,7 +37,7 @@ public class UserController {
         return ResponseEntity.ok(userService.update(id, userRequestDto));
     }
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
     public ResponseEntity<Boolean> delete(@PathVariable(name = "id") Long id){
         if(id == null)
             return ResponseEntity.badRequest().build();
