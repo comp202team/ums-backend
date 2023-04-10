@@ -23,4 +23,10 @@ public class UserRegisterRequestDto {
     @Email
     @NotEmpty
     private String email;
+
+    @NotEmpty
+    private String firstName;
+
+    @NotEmpty
+    private String lastName;
 }

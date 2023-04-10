@@ -55,6 +55,8 @@ public class UserService implements UserDetailsService {
         user.setUsername(userRegisterRequestDto.getUsername());
         user.setPassword(bCryptPasswordEncoder.encode(userRegisterRequestDto.getPassword()));
         user.setEmail(userRegisterRequestDto.getEmail());
+        user.setFirstName(userRegisterRequestDto.getFirstName());
+        user.setLastName(userRegisterRequestDto.getLastName());
         user.setRole(Role.STUDENT);
         user = userRepository.save(user);
         return UserMapper.INSTANCE.userToUserDto(user);
@@ -76,6 +78,12 @@ public class UserService implements UserDetailsService {
         }
         if(userRequestDto.getEmail() != null){
             user.setEmail(userRequestDto.getEmail());
+        }
+        if(userRequestDto.getFirstName() != null){
+            user.setFirstName(userRequestDto.getFirstName());
+        }
+        if (userRequestDto.getLastName() != null){
+            user.setLastName(userRequestDto.getLastName());
         }
         return UserMapper.INSTANCE.userToUserDto(userRepository.save(user));
     }

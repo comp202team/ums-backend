@@ -6,6 +6,8 @@ import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import java.time.LocalDate;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,6 +37,17 @@ public class User extends BaseEntity{
 
     @Column(name = "password")
     private String password;
+
+    @Column(name = "firstName")
+    private String firstName;
+    @Column(name = "lastName")
+    private String lastName;
+    @Column(name = "phone")
+    private String phone;
+    @Column(name = "address")
+    private String address;
+    @Column(name = "dateOfBirth")
+    private LocalDate dob;
 
     @Enumerated(EnumType.STRING)
     private Role role;
