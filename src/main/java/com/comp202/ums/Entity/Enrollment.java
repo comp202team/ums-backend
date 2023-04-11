@@ -6,12 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-@Table(name = "Enrolment")
+@Table(name = "enrollments")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Enrolment {
+public class Enrollment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "enrollmentId")

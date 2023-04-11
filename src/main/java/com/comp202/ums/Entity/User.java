@@ -38,15 +38,15 @@ public class User extends BaseEntity{
     @Column(name = "password")
     private String password;
 
-    @Column(name = "firstName")
+    @Column(name = "first_name")
     private String firstName;
-    @Column(name = "lastName")
+    @Column(name = "last_name")
     private String lastName;
     @Column(name = "phone")
     private String phone;
     @Column(name = "address")
     private String address;
-    @Column(name = "dateOfBirth")
+    @Column(name = "date_of_birth")
     private LocalDate dob;
 
     @Enumerated(EnumType.STRING)

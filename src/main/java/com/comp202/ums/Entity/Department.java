@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-@Table(name = "Department")
+@Table(name = "departments")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,13 +14,13 @@ import java.util.List;
 public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "departmentId")
+    @Column(name = "department_id")
     private long departmentId;
-    @Column(name = "departmentName")
+    @Column(name = "department_name")
     private String departmentName;
-    @Column(name = "departmentCode")
+    @Column(name = "department_code")
     private String departmentCode;
-    @Column(name = "departmentHead")
+    @Column(name = "department_head")
     private String departmentHead;
     @OneToMany(mappedBy = "department")
     private List<Course> offeredCourses;

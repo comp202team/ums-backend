@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-@Table(name = "Course")
+@Table(name = "courses")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,22 +14,22 @@ import java.util.List;
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "courseId")
+    @Column(name = "course_id")
     private long courseId;
-    @Column(name = "courseCode")
+    @Column(name = "course_code")
     private String courseCode;
-    @Column(name = "courseName")
+    @Column(name = "course_name")
     private String courseName;
-    @Column(name = "courseDescription")
+    @Column(name = "course_description")
     private String coursedesc;
-    @Column(name = "creditHours")
+    @Column(name = "credit_hours")
     private long creditHours;
     @ManyToOne()
-    @JoinColumn(name = "departmentId")
+    @JoinColumn(name = "department_id")
     private Department department;
 
     @ManyToOne()
-    @JoinColumn(name = "instructorId")
+    @JoinColumn(name = "instructor_id")
     private Instructor instructor;
     
 

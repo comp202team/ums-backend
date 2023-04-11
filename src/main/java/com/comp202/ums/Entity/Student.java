@@ -27,7 +27,7 @@ public class Student {
     private String phone;
     @Column(name = "address")
     private String address;
-    @Column(name = "dateOfBirth")
+    @Column(name = "date_of_birth")
     private LocalDate dob;
     @ManyToOne
     @JoinColumn(name = "departmentId")
