@@ -48,6 +48,9 @@ public class User extends BaseEntity{
     private String address;
     @Column(name = "date_of_birth")
     private LocalDate dob;
+    @ManyToOne
+    @JoinColumn(name="department")
+    private Department department;
 
     @Enumerated(EnumType.STRING)
     private Role role;

@@ -100,6 +100,10 @@ public class UserService implements UserDetailsService {
 
         return null;
     }
+    public User getByEmail(String email){
+        User user = userRepository.findByEmail(email);
+        return user;
+    }
     public User getUserByUsername(String username){
         User user = userRepository.findByUsername(username);
         if(user == null)

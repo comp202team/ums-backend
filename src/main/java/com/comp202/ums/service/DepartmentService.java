@@ -2,40 +2,45 @@ package com.comp202.ums.service;
 
 import com.comp202.ums.Entity.Course;
 import com.comp202.ums.Entity.Department;
-import com.comp202.ums.Entity.Student;
+import com.comp202.ums.Entity.User;
 import com.comp202.ums.Repository.CourseRepository;
 import com.comp202.ums.Repository.DepartmentRepository;
-import com.comp202.ums.Repository.StudentRepository;
+import com.comp202.ums.Repository.UserRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
+@Service
 public class DepartmentService {
     private final DepartmentRepository departmentRepository;
-    private final StudentRepository studentRepository;
+    private final UserRepository userRepository;
     private final CourseRepository courseRepository;
 
 
-    public DepartmentService(DepartmentRepository departmentRepository, StudentRepository studentRepository, CourseRepository courseRepository) {
+    public DepartmentService(DepartmentRepository departmentRepository, UserRepository userRepository, CourseRepository courseRepository) {
         this.departmentRepository = departmentRepository;
-        this.studentRepository = studentRepository;
+        this.userRepository = userRepository;
         this.courseRepository = courseRepository;
     }
-    public Department getDepartment(Long id){
-        Department dep = departmentRepository.findById(id).orElse(null);
+    public List<Department> getAllDepartments() {
+        return departmentRepository.findAll();
+    }
+    public Department getDepartmentById(Long id){
         return departmentRepository.getByDepartmentId(id);
     }
-    public List<Student> getAllStudentsInThisDeptId(Long depId){
-        return getDepartment(depId).getEnrolledStudents();
+    public Department getDepartmentByDeptCode(String code){
+        return departmentRepository.getDepartmentByDepartmentCode(code);
+    }
+    public List<User> getAllStudentsInThisDeptId(Long depId){
+        return getDepartmentById(depId).getEnrolledStudents();
     }
     public List<Course> getAllCoursesInThisDept(Long id){
-        return getDepartment(id).getOfferedCourses();
+        return getDepartmentById(id).getOfferedCourses();
     }
-    public void deleteDept(Long id){
-        Department department=departmentRepository.findById(id).orElse(null);
+    public void deleteDeptById(Long id){
         departmentRepository.deleteById(id);
     }
-    public Department createDept(Department department){
+    public Department saveDept(Department department){
         return departmentRepository.save(department);
     }
     public Department updateDept(Long id, Department newdepartment){

@@ -1,11 +1,8 @@
 package com.comp202.ums.service;
 
 import com.comp202.ums.Entity.Course;
-import com.comp202.ums.Entity.Instructor;
-import com.comp202.ums.Entity.Student;
 import com.comp202.ums.Repository.CourseRepository;
 import com.comp202.ums.Repository.DepartmentRepository;
-import com.comp202.ums.Repository.InstructorRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,13 +11,10 @@ import java.util.Optional;
 @Service
 public class CourseService {
     private final CourseRepository courseRepository;
-    private final InstructorRepository instructorRepository;
-    private final DepartmentRepository departmentRepository;
 
-    public CourseService(CourseRepository courseRepository, InstructorRepository instructorRepository, DepartmentRepository departmentRepository) {
+    public CourseService(CourseRepository courseRepository ) {
         this.courseRepository = courseRepository;
-        this.instructorRepository = instructorRepository;
-        this.departmentRepository = departmentRepository;
+
     }
 
     public List<Course> getAllCourse(){
@@ -32,21 +26,19 @@ public class CourseService {
     }
    public Course getCourse(Long id){
         Course course =courseRepository.findById(id).orElse(null);
-        return courseRepository.getByCourseId(id);
+        return courseRepository.getById(id);
    }
    public Course getTheCourseByCode(String code){
-        Course course =courseRepository.findByCourseCode(code).orElse(null);
         return courseRepository.getByCourseCode(code);
    }
    public void deleteCourse(Long id){
-        Course course = courseRepository.findById(id).orElse(null);
         courseRepository.deleteById(id);
    }
    public Course updateCourseById(Long id,Course newCourse){
        Optional<Course> course = courseRepository.findById(id);
        if(course.isPresent()){
            Course c1=course.get();
-           c1.setCourseId(newCourse.getCourseId());
+           c1.setId(newCourse.getId());
            c1.setCourseCode(newCourse.getCourseCode());
            c1.setCourseName(newCourse.getCourseName());
            c1.setDepartment(newCourse.getDepartment());

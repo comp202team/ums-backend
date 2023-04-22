@@ -2,6 +2,7 @@ package com.comp202.ums.Entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,12 +11,13 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_id")
-    private long courseId;
+    private long id;
     @Column(name = "course_code")
     private String courseCode;
     @Column(name = "course_name")
@@ -30,7 +32,7 @@ public class Course {
 
     @ManyToOne()
     @JoinColumn(name = "instructor_id")
-    private Instructor instructor;
+    private User instructor;
     
 
 }

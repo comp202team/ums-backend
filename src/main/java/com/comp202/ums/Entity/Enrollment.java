@@ -2,6 +2,7 @@ package com.comp202.ums.Entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 public class Enrollment {
     @Id
@@ -18,7 +20,7 @@ public class Enrollment {
     private long enrollmentId;
     @OneToOne
     @JoinColumn(name = "studentId")
-    private Student student;
+    private User student;
     @OneToOne
     @JoinColumn(name = "courseId")
     private Course course;
@@ -26,4 +28,9 @@ public class Enrollment {
     private LocalDate enrolmentDate;
     @Column(name = "grade")
     private double grade;
+
+    public Enrollment(User student, Course course){
+        this.student = student;
+        this.course=course;
+    }
 }

@@ -2,6 +2,7 @@ package com.comp202.ums.Entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 public class Department {
     @Id
@@ -25,6 +27,6 @@ public class Department {
     @OneToMany(mappedBy = "department")
     private List<Course> offeredCourses;
     @OneToMany(mappedBy = "department")
-    private List<Student> enrolledStudents;
+    private List<User> enrolledStudents;
 
 }
