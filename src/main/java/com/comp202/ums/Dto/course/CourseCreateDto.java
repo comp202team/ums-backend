@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 public class CourseCreateDto {
     private String courseCode;
     private String courseName;
-    private String coursedesc;
+    private String courseDesc;
     private Long creditHours;
 }

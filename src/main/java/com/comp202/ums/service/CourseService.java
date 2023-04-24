@@ -51,7 +51,7 @@ public class CourseService {
         Course course = new Course();
         course.setCourseName(courseCreateDto.getCourseName());
         course.setCourseCode(courseCreateDto.getCourseCode());
-        course.setCoursedesc(courseCreateDto.getCoursedesc());
+        course.setCourseDesc(courseCreateDto.getCourseDesc());
         course.setCreditHours(courseCreateDto.getCreditHours());
         return course;
     }
@@ -84,7 +84,7 @@ public class CourseService {
         Course course = courseRepository.findById(id).orElseThrow(()-> new NotFoundException("Course","Course not Found"));
         course.setCourseCode(newCourse.getCourseCode());
         course.setCourseName(newCourse.getCourseName());
-        course.setCoursedesc(newCourse.getCoursedesc());
+        course.setCourseDesc(newCourse.getCourseDesc());
         course.setCreditHours(newCourse.getCreditHours());
         return CourseMapper.INSTANCE.toDto(courseRepository.save(course));
    }

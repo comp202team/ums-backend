@@ -66,12 +66,12 @@ public class UserService implements UserDetailsService {
     }
     public UserDto getById(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User", "No user found with this id"));
-        currentUserOrAdminControl(user);
+        currentUserOrInstructorControl(user);
         return UserMapper.INSTANCE.userToUserDto(user);
     }
     public UserDto update(Long id, UserRequestDto userRequestDto){
         User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User", "No user found with this id"));
-        currentUserOrAdminControl(user);
+        currentUserOrInstructorControl(user);
 
         if(userRequestDto.getUsername() != null){
             user.setUsername(userRequestDto.getUsername());
@@ -89,7 +89,7 @@ public class UserService implements UserDetailsService {
     }
     public Boolean delete(Long id){
         User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User", "No user found with this id"));
-        currentUserOrAdminControl(user);
+        currentUserOrInstructorControl(user);
         userRepository.delete(user);
         return Boolean.TRUE;
     }
@@ -123,14 +123,14 @@ public class UserService implements UserDetailsService {
     public UserDto getCurrentUserDto(){
         return UserMapper.INSTANCE.userToUserDto(getCurrentUser());
     }
-    protected boolean isAdmin(){
+    protected boolean isInstructor(){
         return hasRole("ROLE_INSTRUCTOR");
     }
     protected boolean hasRole(String role){
         return SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority(role));
     }
-    private void currentUserOrAdminControl(User user){
-        if(getCurrentUser() != user && !isAdmin()){
+    private void currentUserOrInstructorControl(User user){
+        if(getCurrentUser() != user && !isInstructor()){
             throw new ForbiddenException();
         }
     }

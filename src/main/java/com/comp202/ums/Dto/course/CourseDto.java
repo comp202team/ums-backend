@@ -12,7 +12,7 @@ public class CourseDto {
     private Long id;
     private String courseCode;
     private String courseName;
-    private String coursedesc;
+    private String courseDesc;
     private Long creditHours;
     private String departmentCode;
     private UserDto instructor;

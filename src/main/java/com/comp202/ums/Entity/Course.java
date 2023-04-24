@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 @Table(name = "courses")
 @Data
 @AllArgsConstructor
@@ -23,7 +22,7 @@ public class Course {
     @Column(name = "course_name")
     private String courseName;
     @Column(name = "course_description")
-    private String coursedesc;
+    private String courseDesc;
     @Column(name = "credit_hours")
     private Long creditHours;
     @ManyToOne()
