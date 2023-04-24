@@ -15,6 +15,7 @@ import com.comp202.ums.Repository.CourseRepository;
 import com.comp202.ums.Repository.DepartmentRepository;
 import com.comp202.ums.Repository.EnrollmentRepository;
 import com.comp202.ums.Repository.UserRepository;
+import com.comp202.ums.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -80,21 +81,13 @@ public class CourseService {
    public void deleteCourse(Long id){
         courseRepository.deleteById(id);
    }
-   public CourseDto updateCourseById(Long id,CourseDto newCourse){
-        User instructor = userRepository.findByEmail(newCourse.getInstructor().getEmail());
-       Optional<Course> course = courseRepository.findById(id);
-       if(course.isPresent()){
-           Course c1=course.get();
-           c1.setCourseCode(newCourse.getCourseCode());
-           c1.setCourseName(newCourse.getCourseName());
-           c1.setDepartment(departmentRepository.getDepartmentByDepartmentCode(newCourse.getDepartmentCode()));
-           c1.setCoursedesc(newCourse.getCoursedesc());
-           c1.setInstructor(instructor);
-           c1.setCreditHours(newCourse.getCreditHours());
-           courseRepository.save(c1);
-           return CourseMapper.INSTANCE.toDto(c1);
-       }else
-           return null;
+   public CourseDto updateCourseById(Long id,CourseCreateDto newCourse){
+        Course course = courseRepository.findById(id).orElseThrow(()-> new NotFoundException("Course","Course not Found"));
+        course.setCourseCode(newCourse.getCourseCode());
+        course.setCourseName(newCourse.getCourseName());
+        course.setCoursedesc(newCourse.getCoursedesc());
+        course.setCreditHours(newCourse.getCreditHours());
+        return CourseMapper.INSTANCE.toDto(courseRepository.save(course));
    }
     public List<UserDto> getEnrolledStudentsFromCourseId(Long id){
         List<Enrollment> enrollments = enrollmentRepository.getEnrollmentsByCourse_Id(id);

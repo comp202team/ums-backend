@@ -1,6 +1,8 @@
 package com.comp202.ums.service;
 
+import com.comp202.ums.Dto.submission.SubmissionCreateDto;
 import com.comp202.ums.Dto.submission.SubmissionDto;
+import com.comp202.ums.Dto.submission.SubmissionGradingDto;
 import com.comp202.ums.Entity.Assignment;
 import com.comp202.ums.Entity.Submission;
 import com.comp202.ums.Entity.User;
@@ -28,26 +30,37 @@ public class SubmissionService {
     public List<SubmissionDto> getAllSubmissionsFromAssignmentId(Long id){
         return SubmissionMapper.INSTANCE.toSubmissionDtoList(submissionRepository.getSubmissionsByAssignment_Id(id));
     }
-    public SubmissionDto createSubmission(String email, Long assignmentId, Submission submission) {
+    public Submission getSubmissionEntity(Long id){
+        return submissionRepository.findById(id).orElseThrow(()->new NotFoundException("Submission","Submission not found"));
+    }
+    public SubmissionDto createSubmission(String email, Long assignmentId, SubmissionCreateDto submissionCreateDto) {
         User student = userRepository.findByEmail(email);
         if (student==null)
             throw new NotFoundException("User","Student with this email not found: "+email);
         Assignment assignment = assignmentRepository.findById(assignmentId)
                 .orElseThrow(() -> new NotFoundException("Assignment","Invalid assignment id: " + assignmentId));
-
+        Submission submission= new Submission();
+        submission.setTitle(submissionCreateDto.getTitle());
+        submission.setContent(submissionCreateDto.getContent());
         submission.setStudent(student);
         submission.setAssignment(assignment);
         submission.setSubmissionTime(LocalDateTime.now());
         return SubmissionMapper.INSTANCE.toDto(submissionRepository.save(submission));
     }
+    public SubmissionDto updateGrading(Long id,SubmissionGradingDto submissionGradingDto){
+        Submission submission= submissionRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Submission","Invalid Submission id: " + id));
+        submission.setGrade(submissionGradingDto.getGrade());
+        return SubmissionMapper.INSTANCE.toDto(submissionRepository.save(submission));
+    }
 
-    public SubmissionDto updateSubmission(Long submissionId, Submission submission) {
+
+    public SubmissionDto updateSubmission(Long submissionId, SubmissionCreateDto submission) {
         Submission existingSubmission = submissionRepository.findById(submissionId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid submission id: " + submissionId));
+                .orElseThrow(() -> new NotFoundException("Submission","Invalid Submission id: " + submissionId));
 
         existingSubmission.setTitle(submission.getTitle());
         existingSubmission.setContent(submission.getContent());
-        existingSubmission.setGrade(submission.getGrade());
 
         return SubmissionMapper.INSTANCE.toDto(submissionRepository.save(existingSubmission));
     }

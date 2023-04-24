@@ -46,6 +46,9 @@ public class EnrollmentService {
     public EnrollmentMainDto getEnrollment(Long id){
         return EnrollmentMapper.INSTANCE.toDto(enrollmentRepository.getByEnrollmentId(id));
     }
+    public Enrollment getEnrollmentEntity(Long id){
+        return enrollmentRepository.getByEnrollmentId(id);
+    }
     public void deleteEnrolment(Long id){
         enrollmentRepository.deleteById(id);
     }

@@ -1,6 +1,7 @@
 package com.comp202.ums.Map;
 
 import com.comp202.ums.Dto.course.CourseCreateDto;
+import com.comp202.ums.Dto.course.CourseDto;
 import com.comp202.ums.Dto.enrollment.EnrollmentCreateDto;
 import com.comp202.ums.Dto.enrollment.EnrollmentMainDto;
 import com.comp202.ums.Dto.user.UserDto;
@@ -22,6 +23,5 @@ public interface EnrollmentMapper {
     @IterableMapping(qualifiedByName = "toEnrollmentDto")
     List<EnrollmentMainDto> toEnrollmentDtoList(List<Enrollment> enrollments);
     UserDto toUserDto (User user);
-    CourseCreateDto toCourseDto (Course course);
-    Enrollment toEntity(EnrollmentMainDto enrollmentMainDto);
+    CourseDto toCourseDto(Course course);
 }

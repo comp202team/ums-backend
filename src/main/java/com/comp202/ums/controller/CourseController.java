@@ -65,11 +65,7 @@ public class CourseController {
     public ResponseEntity<CourseDto> updateCourse(@PathVariable Long id, @RequestBody CourseCreateDto courseCreateDto) {
         CourseDto course = courseService.getCourse(id);
         if (course!=null) {
-            course.setCourseCode(courseCreateDto.getCourseCode());
-            course.setCourseName(courseCreateDto.getCourseName());
-            course.setCoursedesc(courseCreateDto.getCoursedesc());
-            course.setCreditHours(courseCreateDto.getCreditHours());
-            return ResponseEntity.ok(courseService.updateCourseById(id,course));
+            return ResponseEntity.ok(courseService.updateCourseById(id,courseCreateDto));
         } else {
             return ResponseEntity.notFound().build();
         }

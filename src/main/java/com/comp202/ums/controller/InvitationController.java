@@ -15,8 +15,9 @@ public class InvitationController {
     public InvitationController(CourseInvitationService courseInvitationService){
         this.courseInvitationService=courseInvitationService;
     }
-    @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
+
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
     public ResponseEntity<?> createInvitation(@RequestBody InvitationRequestDto request) {
         for (String email:request.getStudentEmail()) {
             courseInvitationService.createInvitation(email, request.getCourseId());

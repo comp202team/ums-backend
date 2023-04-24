@@ -68,6 +68,6 @@ public class CourseInvitationService {
 
     private String generateInvitationLink(Long invitationId) {
         // Generate a unique link for the invitation using the invitationId
-        return "https://example.com/invitations/" + invitationId;
+        return "localhost:8080/api/invitations/" + invitationId;
     }
 }
