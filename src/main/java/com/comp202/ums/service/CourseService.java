@@ -15,21 +15,28 @@ import com.comp202.ums.Repository.CourseRepository;
 import com.comp202.ums.Repository.DepartmentRepository;
 import com.comp202.ums.Repository.EnrollmentRepository;
 import com.comp202.ums.Repository.UserRepository;
+import com.comp202.ums.exception.ForbiddenException;
+import com.comp202.ums.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CourseService {
+
+    private final UserService userService;
+
     private final CourseRepository courseRepository;
     private final UserRepository userRepository;
     private final DepartmentRepository departmentRepository;
     private final EnrollmentRepository enrollmentRepository;
 
-    public CourseService(CourseRepository courseRepository, UserRepository userRepository, DepartmentRepository departmentRepository
-    ,EnrollmentRepository enrollmentRepository) {
+    public CourseService(UserService userService, CourseRepository courseRepository, UserRepository userRepository, DepartmentRepository departmentRepository
+    , EnrollmentRepository enrollmentRepository) {
+        this.userService = userService;
         this.courseRepository = courseRepository;
         this.userRepository = userRepository;
         this.departmentRepository=departmentRepository;
@@ -37,41 +44,67 @@ public class CourseService {
 
     }
 
-    public List<CourseDto> getAllCourse(){
+    public List<CourseDto> getAllCourses(){
         return CourseMapper.INSTANCE.toCourseDtoList(courseRepository.findAll());
     }
+
+    public List<CourseDto> getAllCoursesByUserId(Long userId){
+        User user = userService.getCurrentUser();
+        if(userService.checkInstructor(user)){
+            return CourseMapper.INSTANCE.toCourseDtoList(courseRepository.getCoursesByInstructorId(userId));
+        }
+        else {
+            List<Enrollment> enrollments = enrollmentRepository.getAllEnrollmentsByStudentId(userId);
+            List<Course> courses = new ArrayList<>();
+            for (Enrollment enrollment : enrollments) {
+                courses.add(enrollment.getCourse());
+            }
+            return CourseMapper.INSTANCE.toCourseDtoList(courses);
+        }
+    }
     public Course getCourseEntity(Long id){
-       return courseRepository.getById(id);
+       return getCourseByIdOrElseThrowError(id);
     }
 
-    public CourseDto createCourse(Course course){
-        return CourseMapper.INSTANCE.toDto(courseRepository.save(course));
+    public CourseDto createCourse(CourseCreateDto courseCreateDto){
+        Course course = courseFromCourseCreate(courseCreateDto);
+        User user = userService.getCurrentUser();
+        if(userService.checkInstructor(user)){
+            course.setInstructor(user);
+            return CourseMapper.INSTANCE.toDto(courseRepository.save(course));
+        }
+        throw new ForbiddenException();
     }
-    public Course courseFromCourseCreate(CourseCreateDto courseCreateDto){
+
+    protected Course courseFromCourseCreate(CourseCreateDto courseCreateDto){
         Course course = new Course();
         course.setCourseName(courseCreateDto.getCourseName());
         course.setCourseCode(courseCreateDto.getCourseCode());
-        course.setCoursedesc(courseCreateDto.getCoursedesc());
+        course.setCourseDesc(courseCreateDto.getCourseDesc());
         course.setCreditHours(courseCreateDto.getCreditHours());
         return course;
     }
-   public CourseDto getCourse(Long id){
-        return CourseMapper.INSTANCE.toDto(courseRepository.getById(id));
+
+    protected CourseDto saveCourse(Course course){
+        return CourseMapper.INSTANCE.toDto(courseRepository.save(course));
+    }
+   public CourseDto getCourseById(Long id){
+        return CourseMapper.INSTANCE.toDto(getCourseByIdOrElseThrowError(id));
    }
    public CourseDto getTheCourseByCode(String code){
         return CourseMapper.INSTANCE.toDto(courseRepository.getByCourseCode(code));
    }
    public CourseDto changeDepartmentOfCourse(Long id, ChangeCourseDeptDto changeCourseDeptDto){
        Department department = departmentRepository.getDepartmentByDepartmentCode(changeCourseDeptDto.getDepartmentCode());
-       Course course = courseRepository.getById(id);
+       Course course = getCourseByIdOrElseThrowError(id);
        course.setDepartment(department);
-       return createCourse(course);
+       return saveCourse(course);
    }
    public CourseDto assignInstructorToCourse(Long id, EmailDto email){
        Course course = courseRepository.getById(id);
        User instructor = userRepository.findByEmail(email.getEmail());
        course.setInstructor(instructor);
-       return createCourse(course);
+       return saveCourse(course);
    }
    public List<CourseDto> getCourseByInstructorEmail(String email){
        User instructor = userRepository.findByEmail(email);
@@ -88,7 +121,7 @@ public class CourseService {
            c1.setCourseCode(newCourse.getCourseCode());
            c1.setCourseName(newCourse.getCourseName());
            c1.setDepartment(departmentRepository.getDepartmentByDepartmentCode(newCourse.getDepartmentCode()));
-           c1.setCoursedesc(newCourse.getCoursedesc());
+           c1.setCourseDesc(newCourse.getCourseDesc());
            c1.setInstructor(instructor);
            c1.setCreditHours(newCourse.getCreditHours());
            courseRepository.save(c1);
@@ -103,6 +136,10 @@ public class CourseService {
             userDtos.add(UserMapper.INSTANCE.userToUserDto(enrollment.getStudent()));
         }
         return userDtos;
+    }
+
+    protected Course getCourseByIdOrElseThrowError(Long id){
+        return courseRepository.findById(id).orElseThrow(() -> new NotFoundException("Course", "no Course found with this id"));
     }
 
 
