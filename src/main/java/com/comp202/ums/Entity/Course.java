@@ -17,7 +17,7 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_id")
-    private long id;
+    private Long id;
     @Column(name = "course_code")
     private String courseCode;
     @Column(name = "course_name")
@@ -25,7 +25,7 @@ public class Course {
     @Column(name = "course_description")
     private String coursedesc;
     @Column(name = "credit_hours")
-    private long creditHours;
+    private Long creditHours;
     @ManyToOne()
     @JoinColumn(name = "department_id")
     private Department department;

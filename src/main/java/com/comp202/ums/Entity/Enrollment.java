@@ -17,7 +17,7 @@ public class Enrollment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "enrollmentId")
-    private long enrollmentId;
+    private Long enrollmentId;
     @OneToOne
     @JoinColumn(name = "studentId")
     private User student;
@@ -27,10 +27,11 @@ public class Enrollment {
     @Column(name = "enrollmentDate")
     private LocalDate enrolmentDate;
     @Column(name = "grade")
-    private double grade;
+    private Double grade;
 
     public Enrollment(User student, Course course){
         this.student = student;
         this.course=course;
+        enrolmentDate=LocalDate.now();
     }
 }

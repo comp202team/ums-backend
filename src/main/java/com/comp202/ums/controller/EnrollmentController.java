@@ -1,9 +1,14 @@
 package com.comp202.ums.controller;
 
 
+import com.comp202.ums.Dto.course.CourseDto;
 import com.comp202.ums.Dto.email.EmailDto;
-import com.comp202.ums.Dto.enrollment.EnrollmentDto;
+import com.comp202.ums.Dto.enrollment.EnrollmentCreateDto;
+import com.comp202.ums.Dto.enrollment.EnrollmentMainDto;
+import com.comp202.ums.Entity.Course;
 import com.comp202.ums.Entity.Enrollment;
+import com.comp202.ums.Map.CourseMapper;
+import com.comp202.ums.Map.EnrollmentMapper;
 import com.comp202.ums.service.CourseService;
 import com.comp202.ums.service.EnrollmentService;
 import com.comp202.ums.service.UserService;
@@ -25,26 +30,26 @@ public class EnrollmentController {
             this.courseService=courseService;
         }
         @GetMapping("/student")
-        public ResponseEntity<List<Enrollment>> getEnrollmentsByStudent(@RequestBody EmailDto email) {
-            List<Enrollment> enrollments = enrollmentService.getEnrollmentsFromStudent(userService.getByEmail(email.getEmail()));
+        public ResponseEntity<List<EnrollmentMainDto>> getEnrollmentsByStudent(@RequestBody EmailDto email) {
+            List<EnrollmentMainDto> enrollments = enrollmentService.getEnrollmentsFromStudent(userService.getByEmail(email.getEmail()));
             return ResponseEntity.ok(enrollments);
         }
         @PostMapping
         @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
-        public ResponseEntity<Enrollment> createEnrollment(@RequestBody EnrollmentDto enrollmentDto) {
-            Enrollment enrollment = new Enrollment(userService.getByEmail(enrollmentDto.getEmail())
-                    ,courseService.getTheCourseByCode(enrollmentDto.getCourseCode()) );
+        public ResponseEntity<EnrollmentMainDto> createEnrollment(@RequestBody EnrollmentCreateDto enrollmentCreateDto) {
+            Course course = courseService.getCourseEntity(courseService.getTheCourseByCode(enrollmentCreateDto.getCourseCode()).getId()) ;
+            Enrollment enrollment = new Enrollment(userService.getByEmail(enrollmentCreateDto.getEmail()),course);
             return ResponseEntity.ok(enrollmentService.saveEnrolment(enrollment));
         }
         @PutMapping("/{id}")
         @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
-        public ResponseEntity<Enrollment> updateEnrollment(@PathVariable Long id, @RequestBody Enrollment enrollment) {
+        public ResponseEntity<EnrollmentMainDto> updateEnrollment(@PathVariable Long id, @RequestBody Enrollment enrollment) {
             return ResponseEntity.ok(enrollmentService.updateEnrolment(id,enrollment));
         }
         @DeleteMapping("/{id}")
         @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
-        public ResponseEntity<Enrollment> deleteEnrollmentById(@PathVariable Long id) {
-            Enrollment existingEnrollment = enrollmentService.getEnrollment(id);
+        public ResponseEntity<EnrollmentMainDto> deleteEnrollmentById(@PathVariable Long id) {
+            Enrollment existingEnrollment = EnrollmentMapper.INSTANCE.toEntity(enrollmentService.getEnrollment(id));
             if (existingEnrollment!=null) {
                 enrollmentService.deleteEnrolment(id);
                 return ResponseEntity.noContent().build();

@@ -72,7 +72,7 @@ public class DataInitCreateUserRole implements CommandLineRunner {
                     .courseCode("COMP202")
                     .courseName("SoftwareDevelopment")
                     .coursedesc("Software development")
-                    .creditHours(5)
+                    .creditHours(5L)
                     .instructor(userRepository.findByUsername("instructor"))
                     .build();
             courseRepository.save(course);

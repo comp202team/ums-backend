@@ -15,13 +15,13 @@ import static com.comp202.ums.Entity.InvitationResponse.DECLINE;
 @Service
 public class CourseInvitationService {
 
-    private CourseInvitationRepository invitationRepository;
+    private final CourseInvitationRepository invitationRepository;
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    private EnrollmentRepository enrollmentRepository;
-    private CourseRepository courseRepository;
-    private EmailService emailService;
+    private final EnrollmentRepository enrollmentRepository;
+    private final CourseRepository courseRepository;
+    private final EmailService emailService;
     public CourseInvitationService(EmailService emailService,CourseInvitationRepository invitationRepository,UserRepository userRepository, EnrollmentRepository enrollmentRepository, CourseRepository courseRepository){
         this.userRepository=userRepository;
         this.emailService=emailService;

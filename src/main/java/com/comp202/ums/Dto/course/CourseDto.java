@@ -1,5 +1,6 @@
 package com.comp202.ums.Dto.course;
 
+import com.comp202.ums.Dto.user.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,8 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CourseDto {
+    private Long id;
     private String courseCode;
     private String courseName;
     private String coursedesc;
-    private long creditHours;
+    private Long creditHours;
+    private String departmentCode;
+    private UserDto instructor;
 }

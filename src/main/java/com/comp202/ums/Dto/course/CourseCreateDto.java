@@ -1,6 +1,5 @@
-package com.comp202.ums.Dto.enrollment;
+package com.comp202.ums.Dto.course;
 
-import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,8 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EnrollmentDto {
-    @Email
-    private String email;
+public class CourseCreateDto {
     private String courseCode;
+    private String courseName;
+    private String coursedesc;
+    private long creditHours;
 }

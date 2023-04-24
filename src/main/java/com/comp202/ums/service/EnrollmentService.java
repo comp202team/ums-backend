@@ -1,8 +1,12 @@
 package com.comp202.ums.service;
 
+import com.comp202.ums.Dto.enrollment.EnrollmentMainDto;
+import com.comp202.ums.Dto.user.UserDto;
 import com.comp202.ums.Entity.Course;
 import com.comp202.ums.Entity.Enrollment;
 import com.comp202.ums.Entity.User;
+import com.comp202.ums.Map.EnrollmentMapper;
+import com.comp202.ums.Map.UserMapper;
 import com.comp202.ums.Repository.CourseRepository;
 import com.comp202.ums.Repository.EnrollmentRepository;
 import com.comp202.ums.Repository.UserRepository;
@@ -23,28 +27,28 @@ public class EnrollmentService {
         this.courseRepository = courseRepository;
         this.enrollmentRepository = enrollmentRepository;
     }
-    public User getInstructor(Long id){
+    public UserDto getInstructor(Long id){
         Course course =courseRepository.findById(id).orElse(null);
         if (course==null)
             throw new NotFoundException("Enrollment","Enrollment Course not found");
-        return course.getInstructor();
+        return UserMapper.INSTANCE.userToUserDto(course.getInstructor());
     }
-    public List<Enrollment> getEnrollmentsFromStudent(User student){
-       return enrollmentRepository.getAllEnrollmentsByStudentId(student.getId());
+    public List<EnrollmentMainDto> getEnrollmentsFromStudent(User student){
+       return EnrollmentMapper.INSTANCE.toEnrollmentDtoList(enrollmentRepository.getAllEnrollmentsByStudentId(student.getId()));
     }
-    public User getStudent(Long id){
-        return userRepository.findById(id).orElse(null);
+    public UserDto getStudent(Long id){
+        return UserMapper.INSTANCE.userToUserDto(userRepository.findById(id).orElse(null));
     }
-    public Enrollment saveEnrolment(Enrollment enrollment){
-        return enrollmentRepository.save(enrollment);
+    public EnrollmentMainDto saveEnrolment(Enrollment enrollment){
+        return EnrollmentMapper.INSTANCE.toDto(enrollmentRepository.save(enrollment));
     }
-    public Enrollment getEnrollment(Long id){
-        return enrollmentRepository.getByEnrollmentId(id);
+    public EnrollmentMainDto getEnrollment(Long id){
+        return EnrollmentMapper.INSTANCE.toDto(enrollmentRepository.getByEnrollmentId(id));
     }
     public void deleteEnrolment(Long id){
         enrollmentRepository.deleteById(id);
     }
-    public Enrollment updateEnrolment(Long id, Enrollment enrollment){
+    public EnrollmentMainDto updateEnrolment(Long id, Enrollment enrollment){
         Optional<Enrollment> enrolment1= enrollmentRepository.findById(id);
         if (enrolment1.isPresent()){
             Enrollment found=enrolment1.get();
@@ -54,7 +58,7 @@ public class EnrollmentService {
             found.setStudent(enrollment.getStudent());
             found.setGrade(enrollment.getGrade());
             enrollmentRepository.save(found);
-            return  found;
+            return  EnrollmentMapper.INSTANCE.toDto(found);
         }else
             return null;
     }

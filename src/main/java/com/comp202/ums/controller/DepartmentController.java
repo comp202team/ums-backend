@@ -2,10 +2,12 @@ package com.comp202.ums.controller;
 
 import com.comp202.ums.Dto.department.AddCourseToDeptDto;
 import com.comp202.ums.Dto.department.AddStudentToDepartmentDto;
+import com.comp202.ums.Dto.department.DepartmentCreateDto;
 import com.comp202.ums.Dto.department.DepartmentDto;
 import com.comp202.ums.Entity.Course;
 import com.comp202.ums.Entity.Department;
 import com.comp202.ums.Entity.User;
+import com.comp202.ums.Map.CourseMapper;
 import com.comp202.ums.Map.DepartmentMapper;
 import com.comp202.ums.service.CourseService;
 import com.comp202.ums.service.DepartmentService;
@@ -28,56 +30,42 @@ public class DepartmentController {
         this.userService=userService;
     }
     @GetMapping
-    public List<Department> getAllDepartments() {
+    public List<DepartmentDto> getAllDepartments() {
         return departmentService.getAllDepartments();
     }
     @GetMapping("/{id}")
-    public ResponseEntity<Department> getDepartmentById(@PathVariable Long id) {
-        Department department = departmentService.getDepartmentById(id);
+    public ResponseEntity<DepartmentDto> getDepartmentById(@PathVariable Long id) {
+        DepartmentDto department = departmentService.getDepartmentById(id);
         return ResponseEntity.ok(department);
     }
     @GetMapping("/code")
-    public ResponseEntity<Department> getDepartmentByDeptCode(@RequestParam String deptCode) {
-        Department department = departmentService.getDepartmentByDeptCode(deptCode);
+    public ResponseEntity<DepartmentDto> getDepartmentByDeptCode(@RequestParam String deptCode) {
+        DepartmentDto department = departmentService.getDepartmentByDeptCode(deptCode);
         return ResponseEntity.ok(department);
     }
     @PostMapping
     @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
-    public ResponseEntity<Department> createDepartment(@RequestBody DepartmentDto departmentDto) {
-        Department department = DepartmentMapper.INSTANCE.CreateDtoToEntity(departmentDto);
-        return ResponseEntity.ok(departmentService.saveDept(department));
+    public ResponseEntity<DepartmentDto> createDepartment(@RequestBody DepartmentCreateDto departmentCreateDto) {
+        return ResponseEntity.ok(departmentService.createDepartment(departmentCreateDto));
     }
     @PostMapping("/addcourse")
     @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
-    public ResponseEntity<Department> addCourseToDepartment(@RequestBody AddCourseToDeptDto dto) {
-        Department department = departmentService.getDepartmentByDeptCode(dto.getDepartmentCode());
-        for (String courseCode: dto.getCourseCodes()) {
-            Course course = courseService.getTheCourseByCode(courseCode);
-            department.getOfferedCourses().add(course);
-        }
-        return ResponseEntity.ok(departmentService.saveDept(department));
+    public ResponseEntity<DepartmentDto> addCourseToDepartment(@RequestBody AddCourseToDeptDto dto) {
+        return ResponseEntity.ok(departmentService.addCourseToDepartment(dto));
     }
 
     @PostMapping("/addstudent")
     @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
-    public ResponseEntity<Department> addStudentToDepartment(@RequestBody AddStudentToDepartmentDto dto) {
-        Department department = departmentService.getDepartmentByDeptCode(dto.getDepartmentCode());
-        for (String studentEmail: dto.getStudentEmail()) {
-            User student = userService.getByEmail(studentEmail);
-            department.getEnrolledStudents().add(student);
-        }
-        return ResponseEntity.ok(departmentService.saveDept(department));
+    public ResponseEntity<DepartmentDto> addStudentToDepartment(@RequestBody AddStudentToDepartmentDto dto) {
+        return ResponseEntity.ok(departmentService.addStudentToDepartment(dto));
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
-    public ResponseEntity<Department> updateDepartment(@PathVariable Long id, @RequestBody DepartmentDto departmentDto) {
-        Department department = departmentService.getDepartmentById(id);
+    public ResponseEntity<DepartmentDto> updateDepartment(@PathVariable Long id, @RequestBody DepartmentCreateDto departmentCreateDto) {
+        Department department = departmentService.getDepartmentEntity(id);
         if (department!=null) {
-            department.setDepartmentName(departmentDto.getDepartmentName());
-            department.setDepartmentCode(departmentDto.getDepartmentCode());
-            department.setDepartmentHead(departmentDto.getDepartmentHead());
-            return ResponseEntity.ok(departmentService.updateDept(id,department));
+            return ResponseEntity.ok(departmentService.updateDept(id,departmentCreateDto));
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -85,8 +73,8 @@ public class DepartmentController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
-    public ResponseEntity<Department> deleteDepartmentById(@PathVariable Long id) {
-        Department existingDepartment = departmentService.getDepartmentById(id);
+    public ResponseEntity<DepartmentDto> deleteDepartmentById(@PathVariable Long id) {
+        Department existingDepartment = departmentService.getDepartmentEntity(id);
         if (existingDepartment!=null) {
             departmentService.deleteDeptById(id);
             return ResponseEntity.noContent().build();
