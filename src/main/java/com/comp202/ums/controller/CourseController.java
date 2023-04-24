@@ -4,10 +4,12 @@ import com.comp202.ums.Dto.course.ChangeCourseDeptDto;
 import com.comp202.ums.Dto.course.CourseCreateDto;
 import com.comp202.ums.Dto.course.CourseDto;
 import com.comp202.ums.Dto.email.EmailDto;
+import com.comp202.ums.Dto.user.UserDto;
 import com.comp202.ums.Entity.Course;
 import com.comp202.ums.Entity.User;
 import com.comp202.ums.service.CourseService;
 import com.comp202.ums.service.DepartmentService;
+import com.comp202.ums.service.EnrollmentService;
 import com.comp202.ums.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,12 +20,13 @@ import java.util.List;
 @RestController
 @RequestMapping("api/courses")
 public class CourseController {
-    private CourseService courseService;
-    private UserService userService;
+    private final CourseService courseService;
+    private final UserService userService;
     private DepartmentService departmentService;
+    private final EnrollmentService enrollmentService;
 
-    public CourseController(CourseService courseService, UserService userService, DepartmentService departmentService){
-
+    public CourseController(CourseService courseService, UserService userService, DepartmentService departmentService,EnrollmentService enrollmentService){
+        this.enrollmentService=enrollmentService;
         this.courseService=courseService;
         this.userService=userService;
         this.departmentService=departmentService;
@@ -105,6 +108,10 @@ public class CourseController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+    @GetMapping("{id}/enrolledstudents")
+    public ResponseEntity<List<UserDto>> getEnrolledStudents(@PathVariable Long id){
+        return ResponseEntity.ok(courseService.getEnrolledStudentsFromCourseId(id));
     }
 
 

@@ -1,9 +1,11 @@
 package com.comp202.ums.controller;
 
+import com.comp202.ums.Dto.course.CourseDto;
 import com.comp202.ums.Dto.department.AddCourseToDeptDto;
 import com.comp202.ums.Dto.department.AddStudentToDepartmentDto;
 import com.comp202.ums.Dto.department.DepartmentCreateDto;
 import com.comp202.ums.Dto.department.DepartmentDto;
+import com.comp202.ums.Dto.user.UserDto;
 import com.comp202.ums.Entity.Course;
 import com.comp202.ums.Entity.Department;
 import com.comp202.ums.Entity.User;
@@ -42,6 +44,16 @@ public class DepartmentController {
     public ResponseEntity<DepartmentDto> getDepartmentByDeptCode(@RequestParam String deptCode) {
         DepartmentDto department = departmentService.getDepartmentByDeptCode(deptCode);
         return ResponseEntity.ok(department);
+    }
+    @GetMapping("/students")
+    public ResponseEntity<List<UserDto>> getEnrolledStudentsDtoFromDepartment(@RequestParam String deptCode) {
+        DepartmentDto department = departmentService.getDepartmentByDeptCode(deptCode);
+        return ResponseEntity.ok(departmentService.getEnrolledStudentsDtoFromDepartment(department.getDepartmentId()));
+    }
+    @GetMapping("/courses")
+    public ResponseEntity<List<CourseDto>> getOfferedCoursesDtoFromDepartment(@RequestParam String deptCode) {
+        DepartmentDto department = departmentService.getDepartmentByDeptCode(deptCode);
+        return ResponseEntity.ok(departmentService.getAllCoursesInThisDept(department.getDepartmentId()));
     }
     @PostMapping
     @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")

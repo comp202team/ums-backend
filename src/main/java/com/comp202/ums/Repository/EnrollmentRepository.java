@@ -12,5 +12,6 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment,Long> {
     @Query(value = "SELECT e FROM Enrollment e where e.student.id=:studentId", nativeQuery = true)
     List<Enrollment> getAllEnrollmentsByStudentId(Long studentId);
     Enrollment getByEnrollmentId(Long id);
+    List<Enrollment> getEnrollmentsByCourse_Id(Long id);
 
 }

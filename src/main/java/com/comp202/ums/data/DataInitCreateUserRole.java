@@ -30,34 +30,12 @@ public class DataInitCreateUserRole implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        Department dbDept = departmentRepository.getDepartmentByDepartmentCode("COMP");
         User dbStudentUser = userRepository.findByUsername("student1");
         User dbInstructorUser = userRepository.findByUsername("instructor");
-        Department dbDept = departmentRepository.getDepartmentByDepartmentCode("COMP");
         Course dbCourse= courseRepository.findByCourseCode("COMP202").orElse(null);
-
         Enrollment dbenrollment = enrollmentRepository.getByEnrollmentId(1L);
 
-        if(null == dbStudentUser){
-            User studentUser = User.builder().username("student")
-                    .role(Role.STUDENT)
-                    .password(bCryptPasswordEncoder.encode("password"))
-                    .email("student@gmail.com")
-                    .firstName("Berke")
-                    .lastName("Yıldırım")
-                    .build();
-            userRepository.save(studentUser);
-        }
-
-        if(dbInstructorUser == null){
-            User instructorUser = User.builder().username("instructor")
-                    .role(Role.INSTRUCTOR)
-                    .password(bCryptPasswordEncoder.encode("password"))
-                    .email("instructor@gmail.com")
-                    .firstName("Hüseyin")
-                    .lastName("Akkaş")
-                    .build();
-            userRepository.save(instructorUser);
-        }
         if (dbDept==null){
             Department department = Department.builder()
                     .departmentName("ComputerEngineering")
@@ -66,7 +44,31 @@ public class DataInitCreateUserRole implements CommandLineRunner {
                     .build();
             departmentRepository.save(department);
         }
+        if(dbStudentUser == null){
+            Department department = departmentRepository.getDepartmentByDepartmentCode("COMP");
+            User studentUser = User.builder().username("student")
+                    .role(Role.STUDENT)
+                    .password(bCryptPasswordEncoder.encode("password"))
+                    .email("student@gmail.com")
+                    .firstName("Berke")
+                    .lastName("Yıldırım")
+                    .department(department)
+                    .build();
+            userRepository.save(studentUser);
+        }
 
+        if(dbInstructorUser == null){
+            Department department = departmentRepository.getDepartmentByDepartmentCode("COMP");
+            User instructorUser = User.builder().username("instructor")
+                    .role(Role.INSTRUCTOR)
+                    .password(bCryptPasswordEncoder.encode("password"))
+                    .email("instructor@gmail.com")
+                    .firstName("Hüseyin")
+                    .lastName("Akkaş")
+                    .department(department)
+                    .build();
+            userRepository.save(instructorUser);
+        }
         if(dbCourse==null){
             Course course = Course.builder().department(departmentRepository.getDepartmentByDepartmentCode("COMP"))
                     .courseCode("COMP202")

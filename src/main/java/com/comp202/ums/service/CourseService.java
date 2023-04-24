@@ -4,15 +4,20 @@ import com.comp202.ums.Dto.course.ChangeCourseDeptDto;
 import com.comp202.ums.Dto.course.CourseCreateDto;
 import com.comp202.ums.Dto.course.CourseDto;
 import com.comp202.ums.Dto.email.EmailDto;
+import com.comp202.ums.Dto.user.UserDto;
 import com.comp202.ums.Entity.Course;
 import com.comp202.ums.Entity.Department;
+import com.comp202.ums.Entity.Enrollment;
 import com.comp202.ums.Entity.User;
 import com.comp202.ums.Map.CourseMapper;
+import com.comp202.ums.Map.UserMapper;
 import com.comp202.ums.Repository.CourseRepository;
 import com.comp202.ums.Repository.DepartmentRepository;
+import com.comp202.ums.Repository.EnrollmentRepository;
 import com.comp202.ums.Repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,11 +26,14 @@ public class CourseService {
     private final CourseRepository courseRepository;
     private final UserRepository userRepository;
     private final DepartmentRepository departmentRepository;
+    private final EnrollmentRepository enrollmentRepository;
 
-    public CourseService(CourseRepository courseRepository, UserRepository userRepository, DepartmentRepository departmentRepository) {
+    public CourseService(CourseRepository courseRepository, UserRepository userRepository, DepartmentRepository departmentRepository
+    ,EnrollmentRepository enrollmentRepository) {
         this.courseRepository = courseRepository;
         this.userRepository = userRepository;
         this.departmentRepository=departmentRepository;
+        this.enrollmentRepository=enrollmentRepository;
 
     }
 
@@ -88,7 +96,14 @@ public class CourseService {
        }else
            return null;
    }
-
+    public List<UserDto> getEnrolledStudentsFromCourseId(Long id){
+        List<Enrollment> enrollments = enrollmentRepository.getEnrollmentsByCourse_Id(id);
+        List<UserDto> userDtos = new java.util.ArrayList<>(Collections.emptyList());
+        for (Enrollment enrollment:enrollments) {
+            userDtos.add(UserMapper.INSTANCE.userToUserDto(enrollment.getStudent()));
+        }
+        return userDtos;
+    }
 
 
 }

@@ -134,6 +134,11 @@ public class UserService implements UserDetailsService {
             throw new ForbiddenException();
         }
     }
+    public boolean checkInstructor(User user){
+        if(user.getRole()==Role.INSTRUCTOR)
+            return true;
+        return false;
+    }
 
 
 }
