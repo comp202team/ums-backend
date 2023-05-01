@@ -11,5 +11,5 @@ public class CourseCreateDto {
     private String courseCode;
     private String courseName;
     private String courseDesc;
-    private long creditHours;
+    private Long creditHours;
 }

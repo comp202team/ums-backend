@@ -15,6 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class AssignmentDto {
     private Long id;
+    private String name;
     private String deadline;
     private CourseDto course;
     private Set<SubmissionDto> submissions;

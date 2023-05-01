@@ -49,7 +49,7 @@ public class EnrollmentController {
         @DeleteMapping("/{id}")
         @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
         public ResponseEntity<EnrollmentMainDto> deleteEnrollmentById(@PathVariable Long id) {
-            Enrollment existingEnrollment = EnrollmentMapper.INSTANCE.toEntity(enrollmentService.getEnrollment(id));
+            Enrollment existingEnrollment = enrollmentService.getEnrollmentEntity(id);
             if (existingEnrollment!=null) {
                 enrollmentService.deleteEnrolment(id);
                 return ResponseEntity.noContent().build();

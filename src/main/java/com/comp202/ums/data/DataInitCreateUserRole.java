@@ -49,7 +49,7 @@ public class DataInitCreateUserRole implements CommandLineRunner {
             User studentUser = User.builder().username("student")
                     .role(Role.STUDENT)
                     .password(bCryptPasswordEncoder.encode("password"))
-                    .email("student@gmail.com")
+                    .email("yedektim@gmail.com")
                     .firstName("Berke")
                     .lastName("Yıldırım")
                     .department(department)

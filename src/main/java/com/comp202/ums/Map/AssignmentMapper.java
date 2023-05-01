@@ -8,6 +8,7 @@ import com.comp202.ums.Entity.Course;
 import com.comp202.ums.Entity.Submission;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
@@ -23,6 +24,7 @@ public interface AssignmentMapper {
     List<AssignmentDto> toAssignmentListDto(List<Assignment> assignments);
     CourseDto toCourseDto(Course course);
     @Named(value = "toSubmissionDto")
+    @Mapping(source = "assignment.name",target = "assignmentName")
     SubmissionDto toSubmissionDto(Submission submission);
     @IterableMapping(qualifiedByName = "toSubmissionDto")
     Set<SubmissionDto> toSubmissionSetDto (Set<Submission> submissions);

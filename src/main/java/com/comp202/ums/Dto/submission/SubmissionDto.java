@@ -18,5 +18,5 @@ public class SubmissionDto {
     private String submissionTime;
     private Double grade;
     private UserDto student;
-    private AssignmentDto assignment;
+    private String assignmentName;
 }
