@@ -37,7 +37,7 @@ public class EnrollmentController {
         @PostMapping
         @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
         public ResponseEntity<EnrollmentMainDto> createEnrollment(@RequestBody EnrollmentCreateDto enrollmentCreateDto) {
-            Course course = courseService.getCourseEntity(courseService.getTheCourseByCode(enrollmentCreateDto.getCourseCode()).getId()) ;
+            Course course = courseService.getCourseEntity(enrollmentCreateDto.getCourseId());
             Enrollment enrollment = new Enrollment(userService.getByEmail(enrollmentCreateDto.getEmail()),course);
             return ResponseEntity.ok(enrollmentService.saveEnrolment(enrollment));
         }

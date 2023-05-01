@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 public class EnrollmentCreateDto {
     @Email
     private String email;
-    private String courseCode;
+    private Long courseId;
 }
