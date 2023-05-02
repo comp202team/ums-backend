@@ -18,6 +18,7 @@ import com.comp202.ums.Repository.UserRepository;
 import com.comp202.ums.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -91,6 +92,20 @@ public class CourseService {
         course.setCreditHours(newCourse.getCreditHours());
         return CourseMapper.INSTANCE.toDto(courseRepository.save(course));
    }
+    public List<CourseDto> getAllCoursesByUserId(Long userId){
+        User user = userService.getCurrentUser();
+        if(userService.checkInstructor(user)){
+            return CourseMapper.INSTANCE.toCourseDtoList(courseRepository.getCoursesByInstructorId(userId));
+        }
+        else {
+            List<Enrollment> enrollments = enrollmentRepository.getEnrollmentsByStudent_Id(userId);
+            List<Course> courses = new ArrayList<>();
+            for (Enrollment enrollment : enrollments) {
+                courses.add(enrollment.getCourse());
+            }
+            return CourseMapper.INSTANCE.toCourseDtoList(courses);
+        }
+    }
     public List<UserDto> getEnrolledStudentsFromCourseId(Long id){
         List<Enrollment> enrollments = enrollmentRepository.getEnrollmentsByCourse_Id(id);
         List<UserDto> userDtos = new java.util.ArrayList<>(Collections.emptyList());

@@ -1,8 +1,5 @@
 package com.comp202.ums.Map;
 
-import com.comp202.ums.Dto.course.CourseCreateDto;
-import com.comp202.ums.Dto.course.CourseDto;
-import com.comp202.ums.Dto.department.DepartmentCreateDto;
 import com.comp202.ums.Dto.department.DepartmentDto;
 import com.comp202.ums.Dto.department.DeptCourseDto;
 import com.comp202.ums.Dto.user.UserDto;
