@@ -53,6 +53,7 @@ public class DataInitCreateUserRole implements CommandLineRunner {
                     .firstName("Berke")
                     .lastName("Yıldırım")
                     .department(department)
+                    .address("Abdullah Gül University")
                     .build();
             userRepository.save(studentUser);
         }
@@ -66,6 +67,7 @@ public class DataInitCreateUserRole implements CommandLineRunner {
                     .firstName("Hüseyin")
                     .lastName("Akkaş")
                     .department(department)
+                    .address("Abdullah Gül University")
                     .build();
             userRepository.save(instructorUser);
         }

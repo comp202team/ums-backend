@@ -9,8 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface EnrollmentRepository extends JpaRepository<Enrollment,Long> {
-    @Query(value = "SELECT e FROM Enrollment e where e.student.id=:studentId", nativeQuery = true)
-    List<Enrollment> getAllEnrollmentsByStudentId(Long studentId);
+    List<Enrollment> getEnrollmentsByStudent_Id(Long id);
     Enrollment getByEnrollmentId(Long id);
     List<Enrollment> getEnrollmentsByCourse_Id(Long id);
 

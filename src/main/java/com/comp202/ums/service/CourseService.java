@@ -25,12 +25,14 @@ import java.util.List;
 public class CourseService {
     private final CourseRepository courseRepository;
     private final UserRepository userRepository;
+    private final UserService userService;
     private final DepartmentRepository departmentRepository;
     private final EnrollmentRepository enrollmentRepository;
 
     public CourseService(CourseRepository courseRepository, UserRepository userRepository, DepartmentRepository departmentRepository
-    ,EnrollmentRepository enrollmentRepository) {
+    ,EnrollmentRepository enrollmentRepository,UserService userService) {
         this.courseRepository = courseRepository;
+        this.userService=userService;
         this.userRepository = userRepository;
         this.departmentRepository=departmentRepository;
         this.enrollmentRepository=enrollmentRepository;
@@ -50,6 +52,7 @@ public class CourseService {
     public Course courseFromCourseCreate(CourseCreateDto courseCreateDto){
         Course course = new Course();
         course.setCourseName(courseCreateDto.getCourseName());
+        course.setInstructor(userService.getCurrentUser());
         course.setCourseCode(courseCreateDto.getCourseCode());
         course.setCourseDesc(courseCreateDto.getCourseDesc());
         course.setCreditHours(courseCreateDto.getCreditHours());

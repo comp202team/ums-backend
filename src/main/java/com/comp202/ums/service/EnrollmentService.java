@@ -35,7 +35,7 @@ public class EnrollmentService {
         return UserMapper.INSTANCE.userToUserDto(course.getInstructor());
     }
     public List<EnrollmentMainDto> getEnrollmentsFromStudent(User student){
-       return EnrollmentMapper.INSTANCE.toEnrollmentDtoList(enrollmentRepository.getAllEnrollmentsByStudentId(student.getId()));
+       return EnrollmentMapper.INSTANCE.toEnrollmentDtoList(enrollmentRepository.getEnrollmentsByStudent_Id(student.getId()));
     }
     public UserDto getStudent(Long id){
         return UserMapper.INSTANCE.userToUserDto(userRepository.findById(id).orElse(null));
