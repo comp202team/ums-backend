@@ -4,6 +4,7 @@ import com.comp202.ums.Dto.course.CourseCreateDto;
 import com.comp202.ums.Dto.course.CourseDto;
 import com.comp202.ums.Dto.department.DepartmentCreateDto;
 import com.comp202.ums.Dto.department.DepartmentDto;
+import com.comp202.ums.Dto.department.DeptCourseDto;
 import com.comp202.ums.Dto.user.UserDto;
 import com.comp202.ums.Entity.Course;
 import com.comp202.ums.Entity.Department;
@@ -25,9 +26,9 @@ public interface DepartmentMapper {
     List<DepartmentDto> toDepartmentDtoList(List<Department> departments);
     @Named(value = "toCourseDto")
     @Mapping(target = "departmentCode", source = "department.departmentCode")
-    CourseDto toCourseDto (Course course);
+    DeptCourseDto toCourseDto (Course course);
     @IterableMapping(qualifiedByName = "toCourseDto")
-    List<CourseDto> courseListToCourseDtoList(List<Course> courses);
+    List<DeptCourseDto> courseListToCourseDtoList(List<Course> courses);
     @Named(value = "toUserDto")
     UserDto toUserDto (User user);
     @IterableMapping(qualifiedByName = "toUserDto")
