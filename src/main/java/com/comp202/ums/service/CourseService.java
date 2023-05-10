@@ -63,6 +63,7 @@ public class CourseService {
         course.setCourseCode(courseCreateDto.getCourseCode());
         course.setCourseDesc(courseCreateDto.getCourseDesc());
         course.setCreditHours(courseCreateDto.getCreditHours());
+        course.setDepartment(departmentRepository.getByDepartmentId(courseCreateDto.getDeptId()));
         return course;
     }
    public CourseDto getCourse(Long id){

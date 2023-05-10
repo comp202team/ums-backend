@@ -12,4 +12,5 @@ public class CourseCreateDto {
     private String courseName;
     private String courseDesc;
     private Long creditHours;
+    private Long deptId;
 }
