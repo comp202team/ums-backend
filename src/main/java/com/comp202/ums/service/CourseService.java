@@ -43,6 +43,12 @@ public class CourseService {
     public List<CourseDto> getAllCourse(){
         return CourseMapper.INSTANCE.toCourseDtoList(courseRepository.findAll());
     }
+
+    public CourseDto getById(Long id){
+        Course course = courseRepository.findById(id).orElseThrow(() -> new NotFoundException("Course", "no course found with this id"));
+        return CourseMapper.INSTANCE.toDto(course);
+    }
+
     public Course getCourseEntity(Long id){
        return courseRepository.getById(id);
     }

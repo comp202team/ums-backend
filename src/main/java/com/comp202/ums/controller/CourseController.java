@@ -16,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/courses")
@@ -32,13 +33,17 @@ public class CourseController {
         this.departmentService=departmentService;
     }
     @GetMapping
-    public List<CourseDto> getAllCourses() {
-        return courseService.getAllCourse();
+    public List<CourseDto> getAllCourses(@RequestParam Optional<Long> userId) {
+        if(userId.isPresent()){
+            return courseService.getAllCoursesByUserId(userId.get());
+        }
+        else
+            return courseService.getAllCourse();
     }
     @GetMapping("/{id}")
-    public ResponseEntity<List<CourseDto>> getCourseByUserId(@PathVariable Long id) {
-        List<CourseDto> courses = courseService.getAllCoursesByUserId(id);
-        return ResponseEntity.ok(courses);
+    public ResponseEntity<CourseDto> getCourseById(@PathVariable Long id) {
+        CourseDto course = courseService.getById(id);
+        return ResponseEntity.ok(course);
     }
     @GetMapping("/code")
     public ResponseEntity<CourseDto> getCourseByCourseCode(@RequestParam String courseCode) {

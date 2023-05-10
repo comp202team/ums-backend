@@ -31,6 +31,7 @@ public class DataInitCreateUserRole implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         Department dbDept = departmentRepository.getDepartmentByDepartmentCode("COMP");
+        Department dbEeeDept = departmentRepository.getDepartmentByDepartmentCode("EEE");
         User dbStudentUser = userRepository.findByUsername("student1");
         User dbInstructorUser = userRepository.findByUsername("instructor");
         Course dbCourse= courseRepository.findByCourseCode("COMP202").orElse(null);
@@ -38,9 +39,17 @@ public class DataInitCreateUserRole implements CommandLineRunner {
 
         if (dbDept==null){
             Department department = Department.builder()
-                    .departmentName("ComputerEngineering")
+                    .departmentName("Computer Engineering")
                     .departmentCode("COMP")
                     .departmentHead("Çağrı Güngör")
+                    .build();
+            departmentRepository.save(department);
+        }
+        if(dbEeeDept == null){
+            Department department = Department.builder()
+                    .departmentName("Electrical Electronics Engineering")
+                    .departmentCode("EEE")
+                    .departmentHead("Mustafa Karaçukur")
                     .build();
             departmentRepository.save(department);
         }
