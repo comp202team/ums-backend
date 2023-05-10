@@ -40,6 +40,8 @@ public class EnrollmentService {
         return UserMapper.INSTANCE.userToUserDto(userRepository.findById(id).orElse(null));
     }
     public EnrollmentMainDto saveEnrolment(Enrollment enrollment){
+        if (enrollmentRepository.getEnrollmentByCourse_IdAndStudent_Id(enrollment.getCourse().getId(), enrollment.getStudent().getId()) != null)
+            throw new IllegalArgumentException("Enrollment already exist");
         return EnrollmentMapper.INSTANCE.toDto(enrollmentRepository.save(enrollment));
     }
     public EnrollmentMainDto getEnrollment(Long id){
