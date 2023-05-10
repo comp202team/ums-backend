@@ -99,12 +99,12 @@ public class CourseService {
         return CourseMapper.INSTANCE.toDto(courseRepository.save(course));
    }
     public List<CourseDto> getAllCoursesByUserId(Long userId){
-        User user = userService.getCurrentUser();
+        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(("User")));
         if(userService.checkInstructor(user)){
             return CourseMapper.INSTANCE.toCourseDtoList(courseRepository.getCoursesByInstructorId(userId));
         }
         else {
-            List<Enrollment> enrollments = enrollmentRepository.getEnrollmentsByStudent_Id(userId);
+            List<Enrollment> enrollments = enrollmentRepository.getEnrollmentsByStudentId(userId);
             List<Course> courses = new ArrayList<>();
             for (Enrollment enrollment : enrollments) {
                 courses.add(enrollment.getCourse());
@@ -113,7 +113,7 @@ public class CourseService {
         }
     }
     public List<UserDto> getEnrolledStudentsFromCourseId(Long id){
-        List<Enrollment> enrollments = enrollmentRepository.getEnrollmentsByCourse_Id(id);
+        List<Enrollment> enrollments = enrollmentRepository.getEnrollmentsByCourseId(id);
         List<UserDto> userDtos = new java.util.ArrayList<>(Collections.emptyList());
         for (Enrollment enrollment:enrollments) {
             userDtos.add(UserMapper.INSTANCE.userToUserDto(enrollment.getStudent()));

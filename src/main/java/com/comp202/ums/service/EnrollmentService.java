@@ -13,7 +13,6 @@ import com.comp202.ums.Repository.UserRepository;
 import com.comp202.ums.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +34,7 @@ public class EnrollmentService {
         return UserMapper.INSTANCE.userToUserDto(course.getInstructor());
     }
     public List<EnrollmentMainDto> getEnrollmentsFromStudent(User student){
-       return EnrollmentMapper.INSTANCE.toEnrollmentDtoList(enrollmentRepository.getEnrollmentsByStudent_Id(student.getId()));
+       return EnrollmentMapper.INSTANCE.toEnrollmentDtoList(enrollmentRepository.getEnrollmentsByStudentId(student.getId()));
     }
     public UserDto getStudent(Long id){
         return UserMapper.INSTANCE.userToUserDto(userRepository.findById(id).orElse(null));
