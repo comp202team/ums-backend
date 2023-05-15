@@ -28,6 +28,10 @@ public class AssignmentController {
     public ResponseEntity<AssignmentDto> getById(@PathVariable Long id){
         return ResponseEntity.ok(assignmentService.getByAssignmentId(id));
     }
+    @GetMapping("student/{studentId}")
+    public ResponseEntity<List<AssignmentDto>> getByStudentId(@PathVariable Long studentId){
+        return ResponseEntity.ok(assignmentService.getByStudentId(studentId));
+    }
     @PostMapping
     @PreAuthorize("hasRole('ROLE_INSTRUCTOR')")
     public ResponseEntity<AssignmentDto> createAssignment(@RequestParam String code, @RequestBody AssignmentCreateDto assignmentCreateDto){
