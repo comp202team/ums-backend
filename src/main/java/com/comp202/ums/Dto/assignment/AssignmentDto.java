@@ -16,6 +16,7 @@ import java.util.Set;
 public class AssignmentDto {
     private Long id;
     private String name;
+    private String description;
     private String deadline;
     private CourseDto course;
     private Set<SubmissionDto> submissions;

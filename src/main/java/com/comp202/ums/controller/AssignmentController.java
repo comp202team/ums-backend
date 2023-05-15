@@ -25,7 +25,7 @@ public class AssignmentController {
         return ResponseEntity.ok(assignmentService.getAllFromCourse(code));
     }
     @GetMapping("/{id}")
-    public ResponseEntity<AssignmentDto> getAllFromCourse(@PathVariable Long id){
+    public ResponseEntity<AssignmentDto> getById(@PathVariable Long id){
         return ResponseEntity.ok(assignmentService.getByAssignmentId(id));
     }
     @PostMapping
