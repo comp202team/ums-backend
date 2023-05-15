@@ -58,7 +58,7 @@ public class DataInitCreateUserRole implements CommandLineRunner {
             User studentUser = User.builder().username("student")
                     .role(Role.STUDENT)
                     .password(bCryptPasswordEncoder.encode("password"))
-                    .email("yedektim@gmail.com")
+                    .email("student@gmail.com")
                     .firstName("Berke")
                     .lastName("Yıldırım")
                     .department(department)
@@ -83,7 +83,7 @@ public class DataInitCreateUserRole implements CommandLineRunner {
         if(dbCourse==null){
             Course course = Course.builder().department(departmentRepository.getDepartmentByDepartmentCode("COMP"))
                     .courseCode("COMP202")
-                    .courseName("SoftwareDevelopment")
+                    .courseName("Software Engineering")
                     .courseDesc("Software development")
                     .creditHours(5L)
                     .instructor(userRepository.findByUsername("instructor"))
