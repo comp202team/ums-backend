@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Table(name = "courses")
 @Data
 @AllArgsConstructor
@@ -28,10 +30,11 @@ public class Course {
     @ManyToOne()
     @JoinColumn(name = "department_id")
     private Department department;
-
     @ManyToOne()
     @JoinColumn(name = "instructor_id")
     private User instructor;
+    @OneToMany(mappedBy = "course")
+    private List<Announcement> announcements;
     
 
 }
