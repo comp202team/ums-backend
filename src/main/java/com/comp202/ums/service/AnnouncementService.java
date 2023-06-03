@@ -24,9 +24,11 @@ public class AnnouncementService {
         Announcement announcement = announcementRepository.findById(id).orElseThrow(() -> new NotFoundException("Announcement", "no announcement found with this id"));
         return announcementRepository.findById(id);
     }
-
+    public Announcement createAnnouncement(Announcement announcement){
+        return announcementRepository.save(announcement);
+    }
     public Announcement updateAnnouncement(Announcement announcement){
-        Announcement newAnnouncement = new Announcement();
+        Announcement newAnnouncement = announcementRepository.findById(announcement.getId()).orElseThrow(() -> new NotFoundException("Announcement", "no announcement found with this id"));
         newAnnouncement.setId(announcement.getId());
         newAnnouncement.setTitle(announcement.getTitle());
         newAnnouncement.setDate(announcement.getDate());
@@ -34,6 +36,7 @@ public class AnnouncementService {
         newAnnouncement.setCourse(announcement.getCourse());
         return announcementRepository.save(newAnnouncement);
     }
+
     public void deleteAnnouncement(Long id){
         Announcement announcement = announcementRepository.findById(id).orElseThrow(() -> new NotFoundException("Announcement", "no announcement found with this id"));
         announcementRepository.deleteById(id);
